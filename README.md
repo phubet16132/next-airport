@@ -1,5 +1,6 @@
 # Next Airport App
 
+**🌍 Live Demo:** [https://next-airport.vercel.app/checkin](https://next-airport.vercel.app/checkin)
 Features:
 - Flight search
 - Boarding pass generation
