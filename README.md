@@ -31,6 +31,32 @@ Features:
 **Prompt 15:** `in first page cau u make if no data found create red inline error no booking found and add it in test case too`
 **Prompt 16:** `data not match in page 1 but can go to anothor page`
 **Prompt 17:** `fix when i select 1 person make it has only 1 i passenger detail`
+**Prompt 18:** `add read me for how to test what data can use and cannot use`
+
+## How to Test the Check-in Flow
+
+The application replaces backend API calls with local React simulated delays and predefined array logic (`mockApi.ts`). 
+To successfully navigate the **Retrieve Booking** page (`/checkin`), you must enter one of the following exact combinations.
+
+### ✅ Valid Data (Will successfully route you to page 2)
+The mock database looks specifically for exact Last Name matches and matching PNRs.
+
+**Passenger 1:**
+- **Last Name:** `Huum`
+- **Booking Reference (PNR):** `ABC123`
+
+**Passenger 2:**
+- **Last Name:** `Kuum`
+- **Booking Reference (PNR):** `ABC123`
+
+*(Note: Data entry is implicitly case-insensitive, meaning `huum` and `abc123` will work too).*
+
+### ❌ Invalid Data (Will block access & show an inline error)
+Any other data sequence will throw a simulation validation error.
+- **Incorrect PNR**: Searching `Huum` with PNR `XYZ999`.
+- **Incorrect Last Name**: Searching `Doe` with PNR `ABC123`.
+- **Partial matches**: Searching `H` with PNR `ABC123` will fail (strict matching is enforced).
+
 ## Setup Notes
 
 - Testing environment powered by `Jest` and `@testing-library/react`.
