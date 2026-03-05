@@ -17,7 +17,22 @@ export default function SelectPaxPage() {
         const load = async () => {
             const data = await fetchPassengers();
             if (isMounted) {
-                setPassengers(data.map((p, i) => ({ ...p, selected: i === 0 })));
+                let selectedIds: string[] = [];
+                try {
+                    const stored = sessionStorage.getItem('selectedPaxIds');
+                    if (stored) selectedIds = JSON.parse(stored);
+                } catch (e) { }
+
+                setPassengers(data.map((p, i) => {
+                    const isInfant = p.type === 'INF';
+                    let selected = false;
+                    if (selectedIds.length > 0) {
+                        selected = selectedIds.includes(p.id) && !isInfant;
+                    } else {
+                        selected = i === 0 && !isInfant;
+                    }
+                    return { ...p, selected };
+                }));
                 setIsLoading(false);
             }
         };
@@ -25,21 +40,31 @@ export default function SelectPaxPage() {
         return () => { isMounted = false; };
     }, []);
 
-    const allSelected = passengers.every(p => p.selected);
+    const selectablePassengers = passengers.filter(p => p.type !== 'INF');
+    const allSelected = selectablePassengers.length > 0 && selectablePassengers.every(p => p.selected);
 
     const togglePassenger = (id: string) => {
-        setPassengers(passengers.map(p =>
-            p.id === id ? { ...p, selected: !p.selected } : p
-        ));
+        setPassengers(passengers.map(p => {
+            if (p.id === id) {
+                if (p.type === 'INF') return p; // Cannot select infants online
+                return { ...p, selected: !p.selected };
+            }
+            return p;
+        }));
     };
 
     const toggleAll = () => {
         if (allSelected) {
             setPassengers(passengers.map(p => ({ ...p, selected: false })));
         } else {
-            setPassengers(passengers.map(p => ({ ...p, selected: true })));
+            setPassengers(passengers.map(p => ({ ...p, selected: p.type !== 'INF' })));
         }
     };
+    const selectedPax = passengers.filter(p => p.selected);
+    const hasCHD = selectedPax.some(p => p.type === 'CHD');
+    const hasADT = selectedPax.some(p => p.type === 'ADT');
+    const chdTravelsAlone = hasCHD && !hasADT;
+    const canContinue = selectedPax.length > 0 && !chdTravelsAlone && !isLoading;
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -82,10 +107,12 @@ export default function SelectPaxPage() {
                                 {passengers.map((pax) => (
                                     <div
                                         key={pax.id}
-                                        onClick={() => togglePassenger(pax.id)}
-                                        className={`relative overflow-hidden border-2 rounded-lg p-5 cursor-pointer transition-colors ${pax.selected
-                                            ? 'border-[#0088cc] bg-sky-50/10'
-                                            : 'border-slate-200 hover:border-slate-300 bg-white'
+                                        onClick={() => pax.type !== 'INF' && togglePassenger(pax.id)}
+                                        className={`relative overflow-hidden border-2 rounded-lg p-5 transition-colors ${pax.type === 'INF'
+                                            ? 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-60'
+                                            : pax.selected
+                                                ? 'border-[#0088cc] bg-sky-50/10 cursor-pointer'
+                                                : 'border-slate-200 hover:border-slate-300 bg-white cursor-pointer'
                                             }`}
                                     >
                                         {/* Checkmark Triangle on top right */}
@@ -106,6 +133,11 @@ export default function SelectPaxPage() {
                                                 Seat {pax.seat}
                                             </span>
                                         </div>
+                                        {pax.type === 'INF' && (
+                                            <p className="text-red-500 text-xs font-medium mt-2">
+                                                * Airport check-in required for infants
+                                            </p>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -130,6 +162,13 @@ export default function SelectPaxPage() {
                         </div>
                     </>
                 )}
+
+                {/* Warning message for CHD traveling alone */}
+                {chdTravelsAlone && (
+                    <div className="max-w-3xl mx-auto mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-800 text-sm font-medium">
+                        Children cannot check in online without an adult passenger in the same booking.
+                    </div>
+                )}
             </main>
 
             {/* Sticky Footer */}
@@ -143,7 +182,7 @@ export default function SelectPaxPage() {
                     </button>
                     <button
                         className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors disabled:bg-sky-300 disabled:cursor-not-allowed"
-                        disabled={passengers.filter(p => p.selected).length === 0 || isLoading}
+                        disabled={!canContinue}
                         onClick={() => {
                             const selectedIds = passengers.filter(p => p.selected).map(p => p.id);
                             sessionStorage.setItem('selectedPaxIds', JSON.stringify(selectedIds));

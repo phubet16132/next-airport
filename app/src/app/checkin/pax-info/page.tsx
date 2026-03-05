@@ -107,6 +107,9 @@ export default function PaxInfoPage() {
                                                     <input
                                                         type="tel"
                                                         defaultValue={index === 0 ? "811234567" : "5551234567"}
+                                                        onChange={(e) => {
+                                                            e.target.value = e.target.value.replace(/\D/g, '');
+                                                        }}
                                                         className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
                                                     />
                                                 </div>
