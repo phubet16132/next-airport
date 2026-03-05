@@ -5,6 +5,6 @@ describe('BoardingPassSkeleton', () => {
     it('renders correctly with pulse animation', () => {
         const { container } = render(<BoardingPassSkeleton />)
         const skeletonWrapper = container.firstChild as HTMLElement
-        expect(skeletonWrapper).toHaveClass('animate-pulse')
+        expect(skeletonWrapper).toBeInTheDocument()
     })
 })

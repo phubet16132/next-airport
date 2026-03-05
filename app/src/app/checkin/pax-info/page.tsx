@@ -4,16 +4,37 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import PaxInfoSkeleton from '@/components/skeletons/PaxInfoSkeleton';
+import { fetchPassengers, Passenger } from '@/lib/mockApi';
 
 export default function PaxInfoPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    const [passengers, setPassengers] = useState<Passenger[]>([]);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
+        let isMounted = true;
+        const load = async () => {
+            const data = await fetchPassengers();
+            if (isMounted) {
+                try {
+                    const stored = sessionStorage.getItem('selectedPaxIds');
+                    if (stored) {
+                        const selectedIds = JSON.parse(stored);
+                        if (selectedIds && selectedIds.length > 0) {
+                            setPassengers(data.filter(p => selectedIds.includes(p.id)));
+                            setIsLoading(false);
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing session storage', e);
+                }
+                setPassengers(data);
+                setIsLoading(false);
+            }
+        };
+        load();
+        return () => { isMounted = false; };
     }, []);
 
     return (
@@ -54,85 +75,46 @@ export default function PaxInfoPage() {
 
                         <div className="space-y-6">
 
-                            {/* Passenger 1 */}
-                            <div className="border border-slate-200 rounded-lg p-5">
-                                <h3 className="font-bold text-lg text-slate-800 mb-4">1. ALEX HUUM</h3>
+                            {passengers.map((pax, index) => (
+                                <div key={pax.id} className="border border-slate-200 rounded-lg p-5">
+                                    <h3 className="font-bold text-lg text-slate-800 mb-4">{index + 1}. {pax.name}</h3>
 
-                                <div className="space-y-5">
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">
-                                            Nationality
-                                        </label>
-                                        <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
-                                            <option value="TH">TH</option>
-                                            <option value="US">US</option>
-                                            <option value="UK">UK</option>
-                                        </select>
-                                    </div>
+                                    <div className="space-y-5">
+                                        <div>
+                                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                                                Nationality
+                                            </label>
+                                            <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium" defaultValue={index === 0 ? "TH" : "US"}>
+                                                <option value="TH">TH</option>
+                                                <option value="US">US</option>
+                                                <option value="UK">UK</option>
+                                            </select>
+                                        </div>
 
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">
-                                            Phone Number
-                                        </label>
-                                        <div className="flex gap-3">
-                                            <div className="w-1/3 max-w-[120px]">
-                                                <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]">
-                                                    <option value="+66">🇹🇭 +66</option>
-                                                    <option value="+1">🇺🇸 +1</option>
-                                                </select>
-                                                <p className="text-xs text-slate-500 mt-1 pl-1">Thailand</p>
-                                            </div>
-                                            <div className="flex-1">
-                                                <input
-                                                    type="tel"
-                                                    defaultValue="811234567"
-                                                    className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
-                                                />
+                                        <div>
+                                            <label className="block text-sm font-bold text-slate-700 mb-2">
+                                                Phone Number
+                                            </label>
+                                            <div className="flex gap-3">
+                                                <div className="w-1/3 max-w-[120px]">
+                                                    <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]" defaultValue={index === 0 ? "+66" : "+1"}>
+                                                        <option value="+66">🇹🇭 +66</option>
+                                                        <option value="+1">🇺🇸 +1</option>
+                                                    </select>
+                                                    <p className="text-xs text-slate-500 mt-1 pl-1">{index === 0 ? 'Thailand' : 'United States'}</p>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <input
+                                                        type="tel"
+                                                        defaultValue={index === 0 ? "811234567" : "5551234567"}
+                                                        className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Passenger 2 */}
-                            <div className="border border-slate-200 rounded-lg p-5">
-                                <h3 className="font-bold text-lg text-slate-800 mb-4">2. Somsee Kuum</h3>
-
-                                <div className="space-y-5">
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">
-                                            Nationality
-                                        </label>
-                                        <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
-                                            <option value="US">US</option>
-                                            <option value="TH">TH</option>
-                                            <option value="UK">UK</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">
-                                            Phone Number
-                                        </label>
-                                        <div className="flex gap-3">
-                                            <div className="w-1/3 max-w-[120px]">
-                                                <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]" defaultValue="+1">
-                                                    <option value="+1">🇺🇸 +1</option>
-                                                    <option value="+66">🇹🇭 +66</option>
-                                                </select>
-                                                <p className="text-xs text-slate-500 mt-1 pl-1">United States</p>
-                                            </div>
-                                            <div className="flex-1">
-                                                <input
-                                                    type="tel"
-                                                    defaultValue="5551234567"
-                                                    className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
 
                         </div>
                     </div>

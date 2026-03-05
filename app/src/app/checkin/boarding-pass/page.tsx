@@ -5,33 +5,39 @@ import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import BoardingPassCard from '@/components/boarding-pass/BoardingPassCard';
 import BoardingPassSkeleton from '@/components/boarding-pass/BoardingPassSkeleton';
+import { fetchBoardingPasses, Passenger } from '@/lib/mockApi';
 
 export default function BoardingPassPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
 
-    // Simulate an API call to fetch boarding passes
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, []);
+    const [passes, setPasses] = useState<Passenger[]>([]);
 
-    const passes = [
-        {
-            name: 'ALEX HUUM',
-            pnr: 'ABC123',
-            seat: '12A',
-            seq: '023'
-        },
-        {
-            name: 'Somsee Kuum',
-            pnr: 'ABC123',
-            seat: '12B',
-            seq: '024'
-        }
-    ];
+    useEffect(() => {
+        let isMounted = true;
+        const load = async () => {
+            const data = await fetchBoardingPasses();
+            if (isMounted) {
+                try {
+                    const stored = sessionStorage.getItem('selectedPaxIds');
+                    if (stored) {
+                        const selectedIds = JSON.parse(stored);
+                        if (selectedIds && selectedIds.length > 0) {
+                            setPasses(data.filter(p => selectedIds.includes(p.id)));
+                            setIsLoading(false);
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing session storage', e);
+                }
+                setPasses(data);
+                setIsLoading(false);
+            }
+        };
+        load();
+        return () => { isMounted = false; };
+    }, []);
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans">

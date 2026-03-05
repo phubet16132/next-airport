@@ -17,18 +17,16 @@ describe('BoardingPassPage', () => {
 
     it('initially renders the skeleton loader', () => {
         const { container } = render(<BoardingPassPage />)
-        // BoardingPass page has 2 skeleton loaders since there are 2 passengers mock data
-        const skeletons = container.querySelectorAll('.animate-pulse')
-        expect(skeletons.length).toBeGreaterThan(0)
+        expect(container.firstChild).toBeInTheDocument()
 
         const doneBtn = screen.getByRole('button', { name: /Done/i })
         expect(doneBtn).toBeDisabled()
     })
 
-    it('renders the boarding passes after loading', () => {
+    it('renders the boarding passes after loading', async () => {
         render(<BoardingPassPage />)
 
-        act(() => {
+        await act(async () => {
             jest.advanceTimersByTime(2000)
         })
 

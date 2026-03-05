@@ -4,21 +4,25 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Check } from 'lucide-react';
 import SelectPaxSkeleton from '@/components/skeletons/SelectPaxSkeleton';
+import { fetchPassengers, Passenger } from '@/lib/mockApi';
 
 export default function SelectPaxPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
 
-    const [passengers, setPassengers] = useState([
-        { id: '1', name: 'ALEX HUUM', type: 'ADT', seat: 'Seat 12A', selected: true },
-        { id: '2', name: 'Somsee Kuum', type: 'ADT', seat: 'Seat 12B', selected: false },
-    ]);
+    const [passengers, setPassengers] = useState<(Passenger & { selected: boolean })[]>([]);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
+        let isMounted = true;
+        const load = async () => {
+            const data = await fetchPassengers();
+            if (isMounted) {
+                setPassengers(data.map((p, i) => ({ ...p, selected: i === 0 })));
+                setIsLoading(false);
+            }
+        };
+        load();
+        return () => { isMounted = false; };
     }, []);
 
     const allSelected = passengers.every(p => p.selected);
@@ -99,7 +103,7 @@ export default function SelectPaxPage() {
                                                 {pax.type}
                                             </span>
                                             <span className="text-slate-600">
-                                                {pax.seat}
+                                                Seat {pax.seat}
                                             </span>
                                         </div>
                                     </div>
@@ -140,7 +144,11 @@ export default function SelectPaxPage() {
                     <button
                         className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors disabled:bg-sky-300 disabled:cursor-not-allowed"
                         disabled={passengers.filter(p => p.selected).length === 0 || isLoading}
-                        onClick={() => router.push('/checkin/pax-info')}
+                        onClick={() => {
+                            const selectedIds = passengers.filter(p => p.selected).map(p => p.id);
+                            sessionStorage.setItem('selectedPaxIds', JSON.stringify(selectedIds));
+                            router.push('/checkin/pax-info');
+                        }}
                     >
                         Continue
                     </button>

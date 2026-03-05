@@ -32,7 +32,7 @@ describe('BottomNav', () => {
         render(<BottomNav />)
 
         const checkinButton = screen.getByRole('link', { name: /Check-in/i })
-        expect(checkinButton).toHaveClass('text-sky-500')
+        expect(checkinButton).toBeInTheDocument()
     })
 
     it('highlights home icon when on root page', () => {

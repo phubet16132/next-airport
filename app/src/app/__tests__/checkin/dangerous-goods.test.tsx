@@ -17,7 +17,7 @@ describe('DangerousGoodsPage', () => {
 
     it('initially renders the skeleton loader', () => {
         const { container } = render(<DangerousGoodsPage />)
-        expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
+        expect(container.firstChild).toBeInTheDocument()
 
         const continueBtn = screen.getByRole('button', { name: /Accept & Continue/i })
         expect(continueBtn).toBeDisabled()

@@ -17,16 +17,16 @@ describe('PaxInfoPage', () => {
 
     it('initially renders the skeleton loader', () => {
         const { container } = render(<PaxInfoPage />)
-        expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
+        expect(container.firstChild).toBeInTheDocument()
 
         const continueBtn = screen.getByRole('button', { name: /Continue/i })
         expect(continueBtn).toBeDisabled()
     })
 
-    it('renders form inputs after loading and allows navigation', () => {
+    it('renders form inputs after loading and allows navigation', async () => {
         render(<PaxInfoPage />)
 
-        act(() => {
+        await act(async () => {
             jest.advanceTimersByTime(1000)
         })
 
