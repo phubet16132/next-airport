@@ -1,23 +1,38 @@
-# Qoomlee Airline (สายการบินคุ่มหลี่)
+# Next Airport App
 
-**Qoomlee Airline — Shine and fly, reach the sky.**  
-(เปล่งประกาย บินสู่ฟ้าไกล)
+Features:
+- Flight search
+- Boarding pass generation
+- Modern UI using Tailwind CSS
 
-Qoomlee Airline หรือที่เรียกในภาษาไทยว่า **สายการบินคุ่มหลี่** (อ่านว่า "คุ่มหลี่") เป็นโปรเจกต์สาธิตที่ผสมผสานความเป็นเลิศทางเทคนิคซอฟต์แวร์เข้ากับการเล่าเรื่องสร้างสรรค์ที่ได้รับแรงบันดาลใจจากวัฒนธรรมอีสาน
+## Commands
+* `npm run dev` - Start development server
+* `npm run build` - Build for production
+* `npm run start` - Start production server
+* `npm run test` - Run Jest test suite 
+* `npm run test:watch` - Run Jest test suite in watch mode
 
-โปรเจกต์นี้แสดงให้เห็นการใช้เทคโนโลยีสมัยใหม่อย่างครบถ้วน ตั้งแต่การออกแบบระบบที่ปรับขนาดได้ โค้ดสะอาด พร้อมการทดสอบ และการใช้บริการคลาวด์และ API ในรูปแบบที่สร้างสรรค์และมีประสิทธิภาพ
+## Work History 
 
-เป้าหมายคือการแสดงให้เห็นว่า นวัตกรรมทางเทคนิคสามารถผสานกับมรดกวัฒนธรรมได้อย่างงดงาม สร้างประสบการณ์ดิจิทัลที่มีคุณภาพสูง ดูแลรักษาง่าย และมีผลกระทบเชิงบวกต่อผู้ใช้
+**Prompt 1:** `create cicd with vercel`
+**Prompt 2:** `yes`
+**Prompt 3:** `why dont remove vercel.json too`
+**Prompt 4:** `refactor make component for reuse able and make skel loading`
+**Prompt 5:** `applie and mock for all possible page`
+**Prompt 6:** `commit to git for skeleton`
+**Prompt 7:** `can u add all my prompt to readme /Users/ar667406/Documents/web-training/next-airport/README.md`
+**Prompt 8:** `can u add test for ui with jest or something that better`
+**Prompt 9:** `create test with jest`
+**Prompt 10:** `can u applie for all page and compoent for functional test and correctiveness  but git commit first`
+**Prompt 11:** `do test case has like check style or pixel if has plz remove`
+**Prompt 12:** `can you explain your concept of your testcase`
+**Prompt 13:** `i mean like what to test what to check`
+**Prompt 14:** `create mock constant data for mock api for every page an make it use that data not static data we use`
+**Prompt 15:** `in first page cau u make if no data found create red inline error no booking found and add it in test case too`
+**Prompt 16:** `data not match in page 1 but can go to anothor page`
+**Prompt 17:** `fix when i select 1 person make it has only 1 i passenger detail`
+## Setup Notes
 
-
-my prompt: fix this project  in src
-create screen with nextTs using design from this folder
-/Users/ar667406/Documents/web-training/next-airport/docs/ui
-
-make it responsive when destop1 map with mobile1
-
-use app rounter
-
-page name relate with image
-
-url: https://next-airport.vercel.app/checkin
+- Testing environment powered by `Jest` and `@testing-library/react`.
+- See `vitest` config traces removed in favor of native Next.js Jest configs according to the Next.js recommendations.
+- Skeletons are implemented for Select Passengers, Passenger Details, Dangerous Goods, and Boarding Pass generation screens.
