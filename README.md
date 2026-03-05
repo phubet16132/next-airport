@@ -38,16 +38,23 @@ Features:
 The application replaces backend API calls with local React simulated delays and predefined array logic (`mockApi.ts`). 
 To successfully navigate the **Retrieve Booking** page (`/checkin`), you must enter one of the following exact combinations.
 
-### ✅ Valid Data (Will successfully route you to page 2)
+### ✅ Valid Adult Data (Will successfully route you to page 2)
 The mock database looks specifically for exact Last Name matches and matching PNRs.
 
-**Passenger 1:**
-- **Last Name:** `Huum`
-- **Booking Reference (PNR):** `ABC123`
+**Booking 1 (Standard):**
+- **Last Name:** `Huum` or `Kuum`
+- **PNR:** `ABC123`
+*(Contains 2 Adults, 1 Infant. Demonstrates Infant selection restriction).*
 
-**Passenger 2:**
-- **Last Name:** `Kuum`
-- **Booking Reference (PNR):** `ABC123`
+**Booking 2 (Single):**
+- **Last Name:** `Solo`
+- **PNR:** `SOLO11`
+*(Contains 1 Adult).*
+
+**Booking 3 (Unaccompanied Minor):**
+- **Last Name:** `Timmy` 
+- **PNR:** `UMNR99`
+*(Contains 1 Child, 1 Infant. Demonstrates Unaccompanied Minor validation error).*
 
 *(Note: Data entry is implicitly case-insensitive, meaning `huum` and `abc123` will work too).*
 
