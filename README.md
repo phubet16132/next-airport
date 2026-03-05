@@ -70,3 +70,30 @@ Any other data sequence will throw a simulation validation error.
 - Testing environment powered by `Jest` and `@testing-library/react`.
 - See `vitest` config traces removed in favor of native Next.js Jest configs according to the Next.js recommendations.
 - Skeletons are implemented for Select Passengers, Passenger Details, Dangerous Goods, and Boarding Pass generation screens.
+
+## Project Structure
+
+A high-level overview of the `src/` directory separating our mock API data layer, App Router pages, reusable layout wrappers, and robust UI tests.
+
+```text
+app/src
+ ├── app                       # Next.js App Router root
+ │   ├── __tests__             # Page-level UI tests (Jest)
+ │   │   ├── checkin
+ │   │   └── page.test.tsx
+ │   ├── checkin               # Booking Check-in Flow feature routes
+ │   │   ├── boarding-pass
+ │   │   ├── dangerous-goods
+ │   │   ├── pax-info
+ │   │   └── select-pax
+ │   ├── globals.css           # Global Tailwind utilities
+ │   └── layout.tsx            # Root application layout shell
+ │
+ ├── components                # Reusable React UI blocks
+ │   ├── boarding-pass         # Final ticket renderers
+ │   ├── layout                # Navigational wrappers (Header & Mobile Nav)
+ │   └── skeletons             # Pulse-loading animated layout shells
+ │
+ └── lib
+     └── mockApi.ts            # Passenger/PNR pseudo-database & delays
+```
