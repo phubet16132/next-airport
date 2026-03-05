@@ -1,4 +1,5 @@
 import { Plane } from 'lucide-react';
+import Image from 'next/image';
 
 export interface BoardingPassProps {
     pass: {
@@ -131,19 +132,13 @@ export default function BoardingPassCard({ pass }: BoardingPassProps) {
 
                     {/* Authentic Apple Wallet Button */}
                     <button className="bg-black text-white w-full py-4 rounded-xl flex items-center justify-center font-semibold text-lg hover:bg-zinc-800 transition-colors">
-                        <svg viewBox="0 0 100 100" className="w-7 h-7 mr-3 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100" height="100" rx="22" fill="#1C1C1E" />
-                            <rect x="14" y="22" width="72" height="56" rx="10" fill="#FFFFFF" />
-                            <g transform="translate(17, 26)">
-                                <path d="M 0 4 C 0 1.5 2 0 4.5 0 L 61.5 0 C 64 0 66 1.5 66 4 L 66 10 L 0 10 Z" fill="#4298D5" />
-                                <path d="M 0 8 L 66 8 L 66 16 L 0 16 Z" fill="#F5B932" />
-                                <path d="M 0 8 L 66 8 L 66 9.5 L 0 9.5 Z" fill="#000000" fillOpacity="0.15" />
-                                <path d="M 0 14 L 66 14 L 66 22 L 0 22 Z" fill="#58B849" />
-                                <path d="M 0 14 L 66 14 L 66 15.5 L 0 15.5 Z" fill="#000000" fillOpacity="0.15" />
-                                <path d="M 0 20 L 22 20 C 25 20 27 28 33 28 C 39 28 41 20 44 20 L 66 20 L 66 28 C 66 30.5 64 32.5 61.5 32.5 L 4.5 32.5 C 2 32.5 0 30.5 0 28 Z" fill="#EF5C5D" />
-                                <path d="M 0 20 L 66 20 L 66 21.5 L 0 21.5 Z" fill="#000000" fillOpacity="0.15" />
-                            </g>
-                        </svg>
+                        <Image
+                            src="/Apple_Wallet_Icon.svg"
+                            alt="Apple Wallet"
+                            width={28}
+                            height={28}
+                            className="mr-3 shrink-0"
+                        />
                         Add to Apple Wallet
                     </button>
                 </div>
