@@ -23,6 +23,7 @@ export default function CheckinPage() {
         const isValid = await validateBooking(lastName, pnr);
 
         if (isValid) {
+            sessionStorage.setItem('currentPnr', pnr);
             router.push('/checkin/select-pax');
         } else {
             setError('No booking found for the provided details. Please try again.');
