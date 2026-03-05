@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react'
 import Home from '../page'
 import { redirect } from 'next/navigation'
 
@@ -13,7 +12,7 @@ describe('Home Page', () => {
             throw new Error('NEXT_REDIRECT')
         })
 
-        expect(() => render(<Home />)).toThrow('NEXT_REDIRECT')
+        expect(() => Home()).toThrow('NEXT_REDIRECT')
         expect(redirect).toHaveBeenCalledWith('/checkin')
     })
 })
