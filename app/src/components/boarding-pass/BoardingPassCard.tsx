@@ -15,7 +15,7 @@ export default function BoardingPassCard({ pass }: BoardingPassProps) {
             {/* Header */}
             <div className="bg-[#0088cc] px-6 py-4 flex items-center justify-between text-white">
                 <div className="flex items-center space-x-2">
-                    <Plane className="w-5 h-5 -rotate-45" />
+                    <Plane className="w-5 h-5" />
                     <span className="font-bold text-lg tracking-wide">Qoomlee</span>
                 </div>
                 <span className="font-medium text-sm">Boarding Pass</span>
@@ -54,7 +54,7 @@ export default function BoardingPassCard({ pass }: BoardingPassProps) {
                     <div className="flex flex-col items-center flex-1 px-2">
                         <div className="flex items-center w-full justify-center text-slate-300 mb-1">
                             <div className="h-[1px] border-t border-dashed border-slate-300 flex-1"></div>
-                            <Plane className="w-5 h-5 text-[#0088cc] mx-2" />
+                            <Plane className="w-5 h-5 text-[#0088cc] mx-2 rotate-45" />
                             <div className="h-[1px] border-t border-dashed border-slate-300 flex-1"></div>
                         </div>
                         <span className="bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1 rounded-full">
@@ -130,7 +130,7 @@ export default function BoardingPassCard({ pass }: BoardingPassProps) {
                     <p className="text-sm text-slate-500 font-medium mb-6">Scan at security and boarding gate</p>
 
                     {/* Authentic Apple Wallet Button */}
-                    <button className="bg-black text-white w-[240px] py-3 rounded-xl flex items-center justify-center font-semibold text-sm hover:bg-zinc-800 transition-colors mx-auto">
+                    <button className="bg-black text-white w-full py-4 rounded-xl flex items-center justify-center font-semibold text-lg hover:bg-zinc-800 transition-colors">
                         <svg viewBox="0 0 100 100" className="w-7 h-7 mr-3 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100" height="100" rx="22" fill="#1C1C1E" />
                             <rect x="14" y="22" width="72" height="56" rx="10" fill="#FFFFFF" />
