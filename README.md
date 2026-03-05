@@ -19,3 +19,5 @@ make it responsive when destop1 map with mobile1
 use app rounter
 
 page name relate with image
+
+url: https://next-airport.vercel.app/checkin
