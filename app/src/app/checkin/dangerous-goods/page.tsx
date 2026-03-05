@@ -1,10 +1,20 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
+import DangerousGoodsSkeleton from '@/components/skeletons/DangerousGoodsSkeleton';
 
 export default function DangerousGoodsPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -35,42 +45,46 @@ export default function DangerousGoodsPage() {
 
             {/* Main Content */}
             <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-8 pb-40">
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                {isLoading ? (
+                    <DangerousGoodsSkeleton />
+                ) : (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
 
-                    <div className="p-6 md:p-8 border-b border-slate-100">
-                        <h1 className="text-2xl font-bold text-slate-800 mb-2">Dangerous Goods Declaration</h1>
-                        <p className="text-slate-600">A mandatory safety and legal declaration as required by Thai law (CAAT/AOT).</p>
+                        <div className="p-6 md:p-8 border-b border-slate-100">
+                            <h1 className="text-2xl font-bold text-slate-800 mb-2">Dangerous Goods Declaration</h1>
+                            <p className="text-slate-600">A mandatory safety and legal declaration as required by Thai law (CAAT/AOT).</p>
+                        </div>
+
+                        <div className="p-6 md:p-8">
+                            <p className="text-[#d93025] font-bold text-lg mb-6 leading-snug">
+                                For the safety of the flight, the transport of specific hazardous items is strictly forbidden.
+                            </p>
+
+                            <p className="text-slate-700 leading-relaxed mb-6">
+                                By continuing, you confirm that you and those in your booking are NOT carrying the following Dangerous Goods in your carry-on or checked baggage, which are prohibited under all circumstances:
+                            </p>
+
+                            <ul className="space-y-4 text-slate-700 list-disc pl-5">
+                                <li className="pl-1">
+                                    Explosives (e.g., Fireworks, Flares, Ammunition, Toy Caps, Gunpowder).
+                                </li>
+                                <li className="pl-1">
+                                    Flammable Items (e.g., Flammable Gases, Gasoline, Lighter Fluid, Aerosol Paints, Strike-Anywhere Matches).
+                                </li>
+                                <li className="pl-1">
+                                    Corrosives & Poisons (e.g., Acids, Bleach, Pesticides, Toxic or Infectious Substances).
+                                </li>
+                                <li className="pl-1">
+                                    Lithium Battery-Powered Vehicles (e.g., Hoverboards, Self-Balancing Wheels, Mini-Segways are forbidden in all baggage).
+                                </li>
+                                <li className="pl-1">
+                                    Other items like Tear Gas, Pepper Spray, or Radioactive Material.
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
-
-                    <div className="p-6 md:p-8">
-                        <p className="text-[#d93025] font-bold text-lg mb-6 leading-snug">
-                            For the safety of the flight, the transport of specific hazardous items is strictly forbidden.
-                        </p>
-
-                        <p className="text-slate-700 leading-relaxed mb-6">
-                            By continuing, you confirm that you and those in your booking are NOT carrying the following Dangerous Goods in your carry-on or checked baggage, which are prohibited under all circumstances:
-                        </p>
-
-                        <ul className="space-y-4 text-slate-700 list-disc pl-5">
-                            <li className="pl-1">
-                                Explosives (e.g., Fireworks, Flares, Ammunition, Toy Caps, Gunpowder).
-                            </li>
-                            <li className="pl-1">
-                                Flammable Items (e.g., Flammable Gases, Gasoline, Lighter Fluid, Aerosol Paints, Strike-Anywhere Matches).
-                            </li>
-                            <li className="pl-1">
-                                Corrosives & Poisons (e.g., Acids, Bleach, Pesticides, Toxic or Infectious Substances).
-                            </li>
-                            <li className="pl-1">
-                                Lithium Battery-Powered Vehicles (e.g., Hoverboards, Self-Balancing Wheels, Mini-Segways are forbidden in all baggage).
-                            </li>
-                            <li className="pl-1">
-                                Other items like Tear Gas, Pepper Spray, or Radioactive Material.
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
+                )}
             </main>
 
             {/* Sticky Footer */}
@@ -87,8 +101,9 @@ export default function DangerousGoodsPage() {
                             Back
                         </button>
                         <button
-                            className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors"
+                            className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors disabled:bg-sky-300 disabled:cursor-not-allowed"
                             onClick={() => router.push('/checkin/boarding-pass')}
+                            disabled={isLoading}
                         >
                             Accept & Continue
                         </button>

@@ -1,10 +1,20 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
+import PaxInfoSkeleton from '@/components/skeletons/PaxInfoSkeleton';
 
 export default function PaxInfoPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -35,94 +45,98 @@ export default function PaxInfoPage() {
 
             {/* Main Content */}
             <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-8 pb-32">
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
-                    <h1 className="text-2xl font-bold text-slate-800 mb-1">Passenger Details</h1>
-                    <p className="text-slate-600 mb-8">Enter required information for each passenger</p>
+                {isLoading ? (
+                    <PaxInfoSkeleton />
+                ) : (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+                        <h1 className="text-2xl font-bold text-slate-800 mb-1">Passenger Details</h1>
+                        <p className="text-slate-600 mb-8">Enter required information for each passenger</p>
 
-                    <div className="space-y-6">
+                        <div className="space-y-6">
 
-                        {/* Passenger 1 */}
-                        <div className="border border-slate-200 rounded-lg p-5">
-                            <h3 className="font-bold text-lg text-slate-800 mb-4">1. ALEX HUUM</h3>
+                            {/* Passenger 1 */}
+                            <div className="border border-slate-200 rounded-lg p-5">
+                                <h3 className="font-bold text-lg text-slate-800 mb-4">1. ALEX HUUM</h3>
 
-                            <div className="space-y-5">
-                                <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">
-                                        Nationality
-                                    </label>
-                                    <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
-                                        <option value="TH">TH</option>
-                                        <option value="US">US</option>
-                                        <option value="UK">UK</option>
-                                    </select>
-                                </div>
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            Nationality
+                                        </label>
+                                        <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
+                                            <option value="TH">TH</option>
+                                            <option value="US">US</option>
+                                            <option value="UK">UK</option>
+                                        </select>
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">
-                                        Phone Number
-                                    </label>
-                                    <div className="flex gap-3">
-                                        <div className="w-1/3 max-w-[120px]">
-                                            <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]">
-                                                <option value="+66">🇹🇭 +66</option>
-                                                <option value="+1">🇺🇸 +1</option>
-                                            </select>
-                                            <p className="text-xs text-slate-500 mt-1 pl-1">Thailand</p>
-                                        </div>
-                                        <div className="flex-1">
-                                            <input
-                                                type="tel"
-                                                defaultValue="811234567"
-                                                className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
-                                            />
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            Phone Number
+                                        </label>
+                                        <div className="flex gap-3">
+                                            <div className="w-1/3 max-w-[120px]">
+                                                <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]">
+                                                    <option value="+66">🇹🇭 +66</option>
+                                                    <option value="+1">🇺🇸 +1</option>
+                                                </select>
+                                                <p className="text-xs text-slate-500 mt-1 pl-1">Thailand</p>
+                                            </div>
+                                            <div className="flex-1">
+                                                <input
+                                                    type="tel"
+                                                    defaultValue="811234567"
+                                                    className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Passenger 2 */}
-                        <div className="border border-slate-200 rounded-lg p-5">
-                            <h3 className="font-bold text-lg text-slate-800 mb-4">2. Somsee Kuum</h3>
+                            {/* Passenger 2 */}
+                            <div className="border border-slate-200 rounded-lg p-5">
+                                <h3 className="font-bold text-lg text-slate-800 mb-4">2. Somsee Kuum</h3>
 
-                            <div className="space-y-5">
-                                <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">
-                                        Nationality
-                                    </label>
-                                    <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
-                                        <option value="US">US</option>
-                                        <option value="TH">TH</option>
-                                        <option value="UK">UK</option>
-                                    </select>
-                                </div>
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            Nationality
+                                        </label>
+                                        <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium">
+                                            <option value="US">US</option>
+                                            <option value="TH">TH</option>
+                                            <option value="UK">UK</option>
+                                        </select>
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">
-                                        Phone Number
-                                    </label>
-                                    <div className="flex gap-3">
-                                        <div className="w-1/3 max-w-[120px]">
-                                            <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]" defaultValue="+1">
-                                                <option value="+1">🇺🇸 +1</option>
-                                                <option value="+66">🇹🇭 +66</option>
-                                            </select>
-                                            <p className="text-xs text-slate-500 mt-1 pl-1">United States</p>
-                                        </div>
-                                        <div className="flex-1">
-                                            <input
-                                                type="tel"
-                                                defaultValue="5551234567"
-                                                className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
-                                            />
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                                            Phone Number
+                                        </label>
+                                        <div className="flex gap-3">
+                                            <div className="w-1/3 max-w-[120px]">
+                                                <select className="w-full border border-slate-300 rounded-md p-3 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 font-medium h-[50px]" defaultValue="+1">
+                                                    <option value="+1">🇺🇸 +1</option>
+                                                    <option value="+66">🇹🇭 +66</option>
+                                                </select>
+                                                <p className="text-xs text-slate-500 mt-1 pl-1">United States</p>
+                                            </div>
+                                            <div className="flex-1">
+                                                <input
+                                                    type="tel"
+                                                    defaultValue="5551234567"
+                                                    className="w-full border border-slate-300 rounded-md p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium h-[50px]"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
+                )}
             </main>
 
             {/* Sticky Footer */}
@@ -135,8 +149,9 @@ export default function PaxInfoPage() {
                         Back
                     </button>
                     <button
-                        className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors"
+                        className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors disabled:bg-sky-300 disabled:cursor-not-allowed"
                         onClick={() => router.push('/checkin/dangerous-goods')}
+                        disabled={isLoading}
                     >
                         Continue
                     </button>

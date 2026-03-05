@@ -1,16 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Check } from 'lucide-react';
+import SelectPaxSkeleton from '@/components/skeletons/SelectPaxSkeleton';
 
 export default function SelectPaxPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
     const [passengers, setPassengers] = useState([
         { id: '1', name: 'ALEX HUUM', type: 'ADT', seat: 'Seat 12A', selected: true },
         { id: '2', name: 'Somsee Kuum', type: 'ADT', seat: 'Seat 12B', selected: false },
     ]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const allSelected = passengers.every(p => p.selected);
 
@@ -57,60 +66,66 @@ export default function SelectPaxPage() {
 
             {/* Main Content */}
             <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-8 relative pb-32">
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
-                    <h1 className="text-2xl font-bold text-slate-800 mb-1">Select Passengers</h1>
-                    <p className="text-slate-600 mb-6">Choose passengers for check-in</p>
+                {isLoading ? (
+                    <SelectPaxSkeleton />
+                ) : (
+                    <>
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+                            <h1 className="text-2xl font-bold text-slate-800 mb-1">Select Passengers</h1>
+                            <p className="text-slate-600 mb-6">Choose passengers for check-in</p>
 
-                    <div className="space-y-4">
-                        {passengers.map((pax) => (
-                            <div
-                                key={pax.id}
-                                onClick={() => togglePassenger(pax.id)}
-                                className={`relative overflow-hidden border-2 rounded-lg p-5 cursor-pointer transition-colors ${pax.selected
-                                    ? 'border-[#0088cc] bg-sky-50/10'
-                                    : 'border-slate-200 hover:border-slate-300 bg-white'
-                                    }`}
-                            >
-                                {/* Checkmark Triangle on top right */}
-                                {pax.selected && (
-                                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[44px] border-l-transparent border-t-[44px] border-t-[#0088cc]">
-                                        <Check className="absolute -top-[38px] right-[4px] w-[18px] h-[18px] text-white" strokeWidth={3} />
+                            <div className="space-y-4">
+                                {passengers.map((pax) => (
+                                    <div
+                                        key={pax.id}
+                                        onClick={() => togglePassenger(pax.id)}
+                                        className={`relative overflow-hidden border-2 rounded-lg p-5 cursor-pointer transition-colors ${pax.selected
+                                            ? 'border-[#0088cc] bg-sky-50/10'
+                                            : 'border-slate-200 hover:border-slate-300 bg-white'
+                                            }`}
+                                    >
+                                        {/* Checkmark Triangle on top right */}
+                                        {pax.selected && (
+                                            <div className="absolute top-0 right-0 w-0 h-0 border-l-[44px] border-l-transparent border-t-[44px] border-t-[#0088cc]">
+                                                <Check className="absolute -top-[38px] right-[4px] w-[18px] h-[18px] text-white" strokeWidth={3} />
+                                            </div>
+                                        )}
+
+                                        <h3 className={`font-bold text-lg mb-2 ${pax.selected ? 'text-sky-800' : 'text-slate-800'}`}>
+                                            {pax.name}
+                                        </h3>
+                                        <div className="flex items-center space-x-3 text-sm">
+                                            <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-medium">
+                                                {pax.type}
+                                            </span>
+                                            <span className="text-slate-600">
+                                                {pax.seat}
+                                            </span>
+                                        </div>
                                     </div>
-                                )}
-
-                                <h3 className={`font-bold text-lg mb-2 ${pax.selected ? 'text-sky-800' : 'text-slate-800'}`}>
-                                    {pax.name}
-                                </h3>
-                                <div className="flex items-center space-x-3 text-sm">
-                                    <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-medium">
-                                        {pax.type}
-                                    </span>
-                                    <span className="text-slate-600">
-                                        {pax.seat}
-                                    </span>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                </div>
+                        </div>
 
-                {/* Floating Select/Clear All Button */}
-                <div className="absolute bottom-24 right-4 md:right-8 z-10">
-                    <button
-                        onClick={toggleAll}
-                        className="flex items-center px-4 py-2 bg-white border border-slate-200 shadow-sm rounded-full text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                    >
-                        {allSelected ? (
-                            <>
-                                <X className="w-4 h-4 mr-2" /> Clear All
-                            </>
-                        ) : (
-                            <>
-                                <Check className="w-4 h-4 mr-2" /> Select All
-                            </>
-                        )}
-                    </button>
-                </div>
+                        {/* Floating Select/Clear All Button */}
+                        <div className="absolute bottom-24 right-4 md:right-8 z-10">
+                            <button
+                                onClick={toggleAll}
+                                className="flex items-center px-4 py-2 bg-white border border-slate-200 shadow-sm rounded-full text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                            >
+                                {allSelected ? (
+                                    <>
+                                        <X className="w-4 h-4 mr-2" /> Clear All
+                                    </>
+                                ) : (
+                                    <>
+                                        <Check className="w-4 h-4 mr-2" /> Select All
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </>
+                )}
             </main>
 
             {/* Sticky Footer */}
@@ -124,7 +139,7 @@ export default function SelectPaxPage() {
                     </button>
                     <button
                         className="flex-1 py-3 px-6 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-700 transition-colors disabled:bg-sky-300 disabled:cursor-not-allowed"
-                        disabled={passengers.filter(p => p.selected).length === 0}
+                        disabled={passengers.filter(p => p.selected).length === 0 || isLoading}
                         onClick={() => router.push('/checkin/pax-info')}
                     >
                         Continue
