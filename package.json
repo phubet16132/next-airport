@@ -1,0 +1,10 @@
+{
+    "name": "next-airport-root",
+    "private": true,
+    "scripts": {
+        "dev": "cd app && bun run dev",
+        "build": "cd app && bun run build",
+        "start": "cd app && bun run start",
+        "lint": "cd app && bun run lint"
+    }
+}
